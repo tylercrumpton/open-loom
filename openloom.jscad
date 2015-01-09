@@ -43,7 +43,7 @@ function main() {
     var startingPegFlat = cube({center:true, size:[startPegDiameter,startPegLength+(circleThickness/2),startPegDiameter]});
     startingPegFlat = startingPegFlat.translate([0,0,-startPegDiameter/2]);
     var startingPeg = difference(startingPegRound, startingPegFlat);
-    startingPeg = startingPeg.translate([0,loomDiameter/2+startPegLength/2+circleThickness/4,0])
+    startingPeg = startingPeg.translate([0,loomDiameter/2+startPegLength/2+circleThickness/4,0]);
 
     // Combine the parts:
     return union(ring, pegs, startingPeg);
