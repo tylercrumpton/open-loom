@@ -12,10 +12,12 @@ function main() {
     var startPegDiameter = 7;
     var startPegLength = 18;
 
+    // Make the ring:
     var outerRadius = (loomDiameter+circleThickness)/2;
     var innerRadius = (loomDiameter-circleThickness)/2;
     var outer = cylinder({r:outerRadius, h:circleHeight});
     var inner = cylinder({r:innerRadius, h:circleHeight});
+    var ring = difference(outer, inner);
 
     // Make first peg:
     var pegBase = cylinder({r:pegDiameter/2, h:pegHeight});
@@ -35,6 +37,14 @@ function main() {
         pegs = union(pegs, newPeg);
     }
 
-    var ring = difference(outer, inner);
-    return union(ring, pegs);
+    // Make the starting peg
+    var startingPegRound = cylinder({r:startPegDiameter/2, h:startPegLength+(circleThickness/2), center:true});
+    startingPegRound = startingPegRound.rotateX(90);
+    var startingPegFlat = cube({center:true, size:[startPegDiameter,startPegLength+(circleThickness/2),startPegDiameter]});
+    startingPegFlat = startingPegFlat.translate([0,0,-startPegDiameter/2]);
+    var startingPeg = difference(startingPegRound, startingPegFlat);
+    startingPeg = startingPeg.translate([0,loomDiameter/2+startPegLength/2+circleThickness/4,0])
+
+    // Combine the parts:
+    return union(ring, pegs, startingPeg);
 }
