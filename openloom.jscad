@@ -1,4 +1,5 @@
 function main() {
+    // All units are in mm.
     var loomDiameter = 140;
     var circleThickness = 19;
     var circleHeight = 13;
@@ -17,12 +18,18 @@ function main() {
     var inner = cylinder({r:innerRadius, h:circleHeight});
 
     // Make first peg:
-    var pegs = cylinder({r:pegDiameter/2, h:pegHeight});
+    var pegBase = cylinder({r:pegDiameter/2, h:pegHeight});
+    var pegSlot = cylinder({r:pegSlotDiam/2, h:pegHeight});
+    pegSlot = pegSlot.translate([pegDiameter/2, 0, 0]);
+    pegs = difference(pegBase, pegSlot);
     pegs = pegs.translate([loomDiameter/2, 0, circleHeight]);
 
     // Make the rest of the pegs:
     for (i=1; i<numPegs; ++i) {
-        var newPeg = cylinder({r:pegDiameter/2, h:pegHeight});
+        var newPegBase = cylinder({r:pegDiameter/2, h:pegHeight});
+        var newPegSlot = cylinder({r:pegSlotDiam/2, h:pegHeight});
+        newPegSlot = newPegSlot.translate([pegDiameter/2, 0, 0]);
+        var newPeg = difference(newPegBase, newPegSlot);
         newPeg = newPeg.translate([loomDiameter/2, 0, circleHeight]);
         pegs = pegs.rotateZ(360/numPegs);
         pegs = union(pegs, newPeg);
